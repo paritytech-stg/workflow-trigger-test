@@ -1,4 +1,4 @@
-name: Workflow run re-run auto-merge-bot on review
+name: Review real action
 on:
   workflow_run:
     workflows:
