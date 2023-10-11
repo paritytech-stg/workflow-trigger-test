@@ -21,6 +21,8 @@ const allArtifacts = await api.rest.actions.listWorkflowRunArtifacts({
     run_id: context.payload.workflow_run.id,
 });
 
+console.log("Artifacts", allArtifacts);
+
 let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
     return artifact.name == "pr_number"
   })[0];
