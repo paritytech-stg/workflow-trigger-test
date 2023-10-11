@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Save PR number
         env:
-          PR_NUMBER: ${{ github.context.payload.pull_request.number }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           echo "Number is $PR_NUMBER"
           mkdir -p ./pr
