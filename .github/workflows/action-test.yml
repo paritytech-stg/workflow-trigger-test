@@ -16,9 +16,10 @@ jobs:
         uses: Bullrich/extract-text-from-artifact@main
         with:
           artifact-name: pr_number
-      - run: echo "The PR that triggered the workflow is \#$NUMBER"
+      - run: echo "The PR that triggered the workflow is $NUMBER"
         env:
           NUMBER: ${{ steps.number.outputs.content }}
+      - run: cat "./pr_number"
       - name: run desired action
         uses: paritytech-stg/workflow-trigger-test@main
         id: rerun-desired-action
