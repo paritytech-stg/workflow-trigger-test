@@ -14,7 +14,8 @@ jobs:
         id: rerun-desired-action
         with:
           # needs write access to the repo
-          GITHUB-TOKEN: ${{ secrets.TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NAME: ${{ secrets.NAME }}
           WORKFLOW-ID: ${{github.event.workflow_run.id}}
           # the event type you wish to rerun
           EVENT-TYPE: "pull_request_target"
