@@ -1,5 +1,6 @@
 import { getInput } from "@actions/core";
 import { context, getOctokit, } from "@actions/github";
+import * as decompress from "decompress";
 
 const token = getInput("TOKEN", { required: true });
 
@@ -40,7 +41,9 @@ await Bun.write(fileLocation, Buffer.from(download.data as string));
 
 const unzipLocation = `${process.env.GITHUB_WORKSPACE}/pr_number.txt`
 
-require('child_process').execSync(`unzip -o ${fileLocation} -d ${unzipLocation}`);
+const unzip = await decompress(fileLocation, unzipLocation);
+
+// require('child_process').execSync(`unzip -o ${fileLocation} -d ${unzipLocation}`);
 
 const prNumber = Bun.file(unzipLocation);
 console.log("Number", await prNumber.text());
