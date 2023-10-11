@@ -1,7 +1,7 @@
 import { getInput } from "@actions/core";
 import { context, getOctokit, } from "@actions/github";
 
-const token = getInput("TOKEN", {required:true});
+const token = getInput("TOKEN", { required: true });
 
 const name = getInput("NAME");
 
@@ -25,12 +25,22 @@ console.log("Artifacts", allArtifacts);
 
 let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
     return artifact.name == "pr_number"
-  })[0];
-  let download = await api.rest.actions.downloadArtifact({
-     owner: context.repo.owner,
-     repo: context.repo.repo,
-     artifact_id: matchArtifact.id,
-     archive_format: 'zip',
-  });
+})[0];
+let download = await api.rest.actions.downloadArtifact({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    artifact_id: matchArtifact.id,
+    archive_format: 'zip',
+});
 
-  console.log(download);
+console.log(download);
+
+const fileLocation = `${process.env.GITHUB_WORKSPACE}/pr_number.zip`;
+await Bun.write(fileLocation, Buffer.from(download.data as string));
+
+const unzipLocation = `${process.env.GITHUB_WORKSPACE}/pr_number.txt`
+
+require('child_process').execSync(`unzip -o ${fileLocation} -d ${unzipLocation}`);
+
+const prNumber = Bun.file(unzipLocation);
+console.log("Number", await prNumber.text());
