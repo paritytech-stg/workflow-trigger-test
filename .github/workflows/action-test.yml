@@ -1,0 +1,22 @@
+name: Workflow run re-run auto-merge-bot on review
+on:
+  workflow_run:
+    workflows:
+      - Review-Trigger
+
+jobs:
+  rerun:
+    runs-on: ubuntu-latest
+    name: Rerun Desired Action
+    steps:
+      - name: run desired action
+        uses: paritytech-stg/workflow-trigger-test@main
+        id: rerun-desired-action
+        with:
+          # needs write access to the repo
+          GITHUB-TOKEN: ${{ secrets.TOKEN }}
+          WORKFLOW-ID: ${{github.event.workflow_run.id}}
+          # the event type you wish to rerun
+          EVENT-TYPE: "pull_request_target"
+          # the id of the workflow you're trying to re-run
+          ID-TO-RERUN: "6519819"
